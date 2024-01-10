@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <main>
+        <div class="nav-menu">
+            @*<ShopNavMenu />*@
+            <NavMenu />
+        </div>
+
+        <div class="top-row px-2">
+            <Search />
+            <UserButton />
+            <CartCounter />
+        </div>
+
+        <article class="content px-2">
+            @Body
+        </article>
+    </main>
+</div>
+
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>

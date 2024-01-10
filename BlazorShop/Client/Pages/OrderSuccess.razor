@@ -1,0 +1,15 @@
+﻿@page "/order-success"
+@inject ICartService CartService
+
+<PageTitle>Dzięki!</PageTitle>
+
+<h3>Dzięki!</h3>
+
+<span>Dziękujemy za złożenie zamówienia! Tutaj możesz sprawdzić swoje <a href="orders">zamówienia</a>.</span>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await CartService.GetCartItemsCount();
+    }
+}
