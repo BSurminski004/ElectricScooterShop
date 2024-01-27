@@ -10,6 +10,7 @@ global using BlazorShop.Server.Services.ProductTypeService;
 using BlazorShop.DataAccess.DataContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using BlazorShop.Server.Services.EmailService;
 
 namespace BlazorShop
 {
@@ -38,6 +39,7 @@ namespace BlazorShop
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<IProductTypeService, ProductTypeService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

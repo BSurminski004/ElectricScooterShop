@@ -1,8 +1,4 @@
-﻿ using BlazorShop.Server.Services.AuthService;
-using BlazorShop.Server.Services.OrderService;
-using BlazorShop.Server.Services.CartService;
-using BlazorShop.Shared.Entities;
-using Microsoft.Extensions.Logging;
+﻿using BlazorShop.Shared.Entities;
 using Stripe;
 using Stripe.Checkout;
 
@@ -49,11 +45,6 @@ namespace BlazorShop.Server.Services.PaymentService
             var options = new SessionCreateOptions
             {
                 CustomerEmail = _authService.GetUserEmail(),
-                ShippingAddressCollection =
-                    new SessionShippingAddressCollectionOptions
-                    {
-                        AllowedCountries = new List<string> { "PL" }
-                    },
                 PaymentMethodTypes = new List<string>
                 {
                     "card"
@@ -70,10 +61,10 @@ namespace BlazorShop.Server.Services.PaymentService
         }
 
         public async Task<ServiceResponse<bool>> FulfillOrder(HttpRequest request)
-        {
-            var json = await new StreamReader(request.Body).ReadToEndAsync();
+        { 
             try
             {
+                var json = await new StreamReader(request.Body).ReadToEndAsync();
                 var stripeEvent = EventUtility.ConstructEvent(
                 json,
                         request.Headers["Stripe-Signature"],

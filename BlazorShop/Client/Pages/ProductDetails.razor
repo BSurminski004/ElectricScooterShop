@@ -33,7 +33,7 @@ else
                     <select class="form-select" @bind="currentTypeId">
                         @foreach (var variant in product.Variants)
                         {
-                            <option value="@variant.ProductTypeId">@variant.ProductType.Name</option>
+                            <option value="@variant.ProductTypeId">@variant.ProductType.Name (@variant.Price PLN)</option>
                         }
                     </select>
                 </div>
@@ -43,15 +43,20 @@ else
                 @if (GetSelectedVariant().OriginalPrice > GetSelectedVariant().Price)
                 {
                     <h6 class="text-muted original-price">
-                        PLN @GetSelectedVariant().OriginalPrice
+                        @GetSelectedVariant().OriginalPrice PLN
                     </h6>
                 }
                 <h4 class="price">
-                    PLN @GetSelectedVariant().Price
+                    @GetSelectedVariant().Price PLN
                 </h4>
             }
+
+            <h6 class="price">
+                Najniższa cena sprzed 30 dni: @(GetSelectedVariant().Price + 100) PLN
+            </h6>
+
             <button class="btn btn-primary" @onclick="AddToCart">
-                <i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Dodaj do koszyka
+                <i class="oi oi-cart m-2"></i>&nbsp;&nbsp;&nbsp;Dodaj do koszyka
             </button>
         </div>
     </div>
@@ -62,6 +67,7 @@ else
     private Product? product = null;
     private string message = string.Empty;
     private int currentTypeId = 1;
+    private decimal priceWithinMonth = 0.0m;
 
     [Parameter]
     public int Id { get; set; }

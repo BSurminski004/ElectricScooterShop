@@ -9,26 +9,25 @@
 else
 {
     <div class="container mt-5">
-        <div class="row">
+        <div class="row justify-content-md-center">
             @foreach (var product in ProductService.Products)
             {
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card media-img-wrapper">
                         <a href="/product/@product.Id">
                             @if (!string.IsNullOrEmpty(product.ImageUrl))
                             {
-                                <img class="card-img-top" src="@product.ImageUrl" alt="@product.Title" />
+                                <img class="card-img-top media-img" src="@product.ImageUrl" alt="@product.Title" />
                             }
                             else if (product.Images.Count > 0)
                             {
-                                <img class="card-img-top" src="@product.Images[0].Data" alt="@product.Title" />
+                                <img class="card-img-top media-img" src="@product.Images[0].Data" alt="@product.Title" />
                             }
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">@product.Title</h5>
-                            <p class="card-text">@product.Description</p>
-                            <p class="card-text">Cena: @GetPriceText(product) PLN</p>
-                            <a href="=" /product/@product.Id" class="btn btn-primary">Kup teraz</a>
+                            <p class="card-text">Cena: @GetPriceText(product) ZŁ</p>
+                            <a href="/product/@product.Id" class="btn btn-primary">Kup teraz</a>
                         </div>
                     </div>
                 </div>
@@ -71,10 +70,6 @@ else
         return $"Od {minPrice}";
     }
 }
-
-
-
-
 
 
 

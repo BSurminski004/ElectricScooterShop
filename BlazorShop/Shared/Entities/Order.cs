@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorShop.Shared.Entities
 {
@@ -12,7 +7,11 @@ namespace BlazorShop.Shared.Entities
         public int Id { get; set; }
         public int UserId { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
-
+        public string DeliveryType { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal DeliveryPrice { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal ItemPrice { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
         public List<OrderItem> OrderItems { get; set; }

@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace BlazorShop.Shared.Entities
 {
-    public class UserLogin
+    public class UserResetPassword
     {
-        [Required, EmailAddress]
-        public string Email { get; set; } = string.Empty;
         [Required]
+        public string Token { get; set; } = string.Empty;
+        [Required, StringLength(100, MinimumLength = 6)]
         public string Password { get; set; } = string.Empty;
+        [Compare("Password", ErrorMessage = "Hasła nie są takie same.")]
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

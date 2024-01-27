@@ -4,6 +4,7 @@ using BlazorShop.DataAccess.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorShop.DataAccess.Migrations
 {
     [DbContext(typeof(DataContext.DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240125094410_allInOne")]
+    partial class allInOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,7 +375,7 @@ namespace BlazorShop.DataAccess.Migrations
                     b.Property<string>("VerificationToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("VerifiedTime")
+                    b.Property<DateTime>("VerifiedTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -468,7 +470,8 @@ namespace BlazorShop.DataAccess.Migrations
 
             modelBuilder.Entity("BlazorShop.Shared.Entities.User", b =>
                 {
-                    b.Navigation("Address");
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

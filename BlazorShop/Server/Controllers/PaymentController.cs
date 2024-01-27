@@ -10,10 +10,12 @@ namespace BlazorShop.Server.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
+        private readonly IOrderService _orderService;
 
-        public PaymentController(IPaymentService paymentService)
+        public PaymentController(IPaymentService paymentService, IOrderService orderService)
         {
             _paymentService = paymentService;
+            _orderService = orderService;
         }
 
         [HttpPost("checkout"), Authorize]
@@ -27,10 +29,11 @@ namespace BlazorShop.Server.Controllers
         public async Task<ActionResult<ServiceResponse<bool>>> FulfillOrder()
         {
             var response = await _paymentService.FulfillOrder(Request);
+            //await _orderService.PlaceOrder(userId);
             if (!response.Success)
                 return BadRequest(response.Message);
 
-            return Ok(response);
+            return Ok();
         }
     }
 }

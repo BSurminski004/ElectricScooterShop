@@ -45,6 +45,13 @@ namespace BlazorShop.Client.Services.OrderService
                 return "login";
             }
         }
+
+        //public async Task<bool> FullFillOrder(List<CartProductResponseDto> cartProducts)
+        //{
+        //    var content = JsonContent.Create(new { user = user });
+        //    await _http.PostAsync("api/payment", content);
+        //    return true;
+        //}
         private async Task<bool> IsUserAuthenticated()
         {
             return (await _authStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated;

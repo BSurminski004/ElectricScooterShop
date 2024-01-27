@@ -11,9 +11,9 @@ namespace BlazorShop.Shared.Entities
     {
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;
-        [Required, StringLength(100, MinimumLength = 6)]
+        [Required, StringLength(100, MinimumLength = 6,ErrorMessage = "Please enter at least 6 characters.")]
         public string Password { get; set; } = string.Empty;
-        [Compare("Password", ErrorMessage = "The passwords do not match.")]
+        [Compare("Password", ErrorMessage = "Hasła nie są takie same.")]
         public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

@@ -5,9 +5,9 @@
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
-<PageTitle>Shopping Cart</PageTitle>
+<PageTitle>Koszyk</PageTitle>
 
-<h3>Shopping Cart</h3>
+<h2>Koszyk</h2>
 
 @if (cartProducts == null || cartProducts.Count == 0)
 {
@@ -27,8 +27,8 @@ else
                     <span>@product.ProductType</span><br />
                     <input type="number" value="@product.Quantity"
                    @onchange="@((ChangeEventArgs e) => UpdateQuantity(e, product))"
-                   class="form-control input-quantity"
-                   min="1" />
+                           class="form-control input-quantity"
+                           min="1" />
                     <button class="btn-delete" @onclick="@(() =>
                         RemoveProductFromCart(product.ProductId, product.ProductTypeId))">
                         Delete
@@ -37,18 +37,73 @@ else
                 <div class="cart-product-price">@(product.Price * product.Quantity) ZŁ</div>
             </div>
         }
-        <div class="cart-product-price">
-            Total (@cartProducts.Count): @cartProducts.Sum(product => @product.Price * product.Quantity) ZŁ
-        </div>
     </div>
+    
     @if (isAuthenticated)
     {
-        <div>
+        <hr />
+        <div class="">
             <h5>Adres Dostawy</h5>
             <AddressForm />
+            @*<DeliveryForm />*@
         </div>
     }
-    <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Checkout</button>
+
+    <hr />
+    <h4>Sposób dostawy</h4>
+    <form>
+        @if (cartProducts.Sum(product => product.Price * product.Quantity) < 1500)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sposobDostawy" id="paczkomat" value="paczkomat" @onchange="OnDeliveryMethodChange">
+                <label class="form-check-label" for="paczkomat">
+                    Paczkomat Inpost (10zł)
+                </label>
+            </div>
+        }else
+        {
+            <div class="form-check">
+                <label class="form-check-label text-decoration-line-through" for="paczkomat">
+                    Paczkomat Inpost (10zł)
+                </label>
+            </div>
+        }
+       
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sposobDostawy" id="kurierInpost" value="kurierInpost" @onchange="OnDeliveryMethodChange">
+            <label class="form-check-label" for="kurierInpost">
+                Kurier Inpost (15zł)
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sposobDostawy" id="kurierDHL" value="kurierDHL" @onchange="OnDeliveryMethodChange">
+            <label class="form-check-label" for="kurierDHL">
+                Kurier DHL (20zł)
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sposobDostawy" id="pocztaPolska" value="pocztaPolska" @onchange="OnDeliveryMethodChange">
+            <label class="form-check-label" for="pocztaPolska">
+                Poczta Polska (12zł)
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sposobDostawy" id="odbiorOsobisty" value="odbiorOsobisty" @onchange="OnDeliveryMethodChange" checked>
+            <label class="form-check-label" for="odbiorOsobisty">
+                Odbiór Osobisty (0zł)
+            </label>
+        </div>
+    </form>
+
+    <div class="cart-product-price">
+        Razem (@cartProducts.Count): @(cartProducts.Sum(product => product.Price * product.Quantity) + selectedDeliveryPrice) ZŁ
+    </div>
+
+    <button @onclick="PlaceOrder" class="btn btn-primary alert-success float-end m-2">Płatność</button>
 }
 
 
@@ -57,10 +112,21 @@ else
     List<CartProductResponseDto> cartProducts = null;
     string message = "Ładowanie koszyka...";
     bool isAuthenticated = false;
+    private string selectedDeliveryMethod = "";
+    private decimal selectedDeliveryPrice = 0.00m;
+    string user = "";
+
+    private Dictionary<string, decimal> deliveryPrices = new Dictionary<string, decimal>
+    {
+        {"paczkomat", 10.00m},
+        {"kurierInpost", 15.00m},
+        {"kurierDHL", 20.00m},
+        {"pocztaPolska", 12.00m},
+        {"odbiorOsobisty", 0.00m}
+    };
 
     protected override async Task OnInitializedAsync()
     {
-        isAuthenticated = await AuthService.IsUserAuthenticated();
         await LoadCart();
     }
 
@@ -68,6 +134,19 @@ else
     {
         await CartService.RemoveProductFromCart(productId, productTypeId);
         await LoadCart();
+    }
+
+    private void OnDeliveryMethodChange(ChangeEventArgs e)
+    {
+        selectedDeliveryMethod = e.Value.ToString();
+        if (deliveryPrices.ContainsKey(selectedDeliveryMethod))
+        {
+            selectedDeliveryPrice = deliveryPrices[selectedDeliveryMethod];
+        }
+        else
+        {
+            selectedDeliveryPrice = 0.00m; // Default to 0 if not found
+        }
     }
 
     private async Task LoadCart()
@@ -90,6 +169,7 @@ else
 
     private async Task PlaceOrder()
     {
+        //await OrderService.FullFillOrder(cartProducts);
         string url = await OrderService.PlaceOrder();
         NavigationManager.NavigateTo(url);
     }

@@ -36,5 +36,19 @@ namespace BlazorShop.Client.Services.AuthService
             var result = await _http.PostAsJsonAsync("api/auth/register", request);
             return await result.Content.ReadFromJsonAsync<ServiceResponse<int>>();
         }
+
+        public async Task<ServiceResponse<bool>> ForgotPassword(string email)
+        {
+            var result = await _http.PostAsJsonAsync("api/auth/forgot-password", email);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
+        }
+
+        public async Task<ServiceResponse<bool>> ResetPassword(UserResetPassword request)
+        {
+            var result = await _http.PostAsJsonAsync("api/auth/forgot-password", request);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
+        }
+
+       
     }
 }

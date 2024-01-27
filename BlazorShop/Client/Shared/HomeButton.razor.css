@@ -1,5 +1,12 @@
 ﻿﻿.home-button {
+    color: white;
     white-space: nowrap;
     margin-right: 10px;
-    transform: rotate(-5deg);
+    transition: transform 0.3s ease;
+}
+
+.home-button:hover {
+    color: red;
+    background-color: white;
+    transform: rotate(-20deg) scale(1.3);
 }

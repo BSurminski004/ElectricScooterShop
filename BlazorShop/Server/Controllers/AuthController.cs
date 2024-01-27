@@ -1,6 +1,9 @@
-﻿using BlazorShop.Shared.Entities;
+﻿using BlazorShop.Server.Services.EmailService;
+using BlazorShop.Shared.Entities;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 using System.Security.Claims;
 
 namespace BlazorShop.Server.Controllers
@@ -10,12 +13,14 @@ namespace BlazorShop.Server.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IEmailService emailService)
         {
             _authService = authService;
+            _emailService = emailService;
         }
-        
+
         [HttpPost("register")]
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegister request)
         {
@@ -44,6 +49,49 @@ namespace BlazorShop.Server.Controllers
             }
 
             return Ok(response);
+        }
+
+        [HttpGet("verify")]
+        public async Task<ActionResult<ServiceResponse<bool>>> Verify([FromQuery]string token)
+        {
+            var response = await _authService.Verify(token);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            
+            return Ok(response.Message);
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult<ServiceResponse<bool>>> ForgotPassword(string email)
+        {
+            var response = await _authService.ForgotPassword(email);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<ActionResult<ServiceResponse<bool>>> ResetPassword(UserResetPassword request)
+        {
+            var response = await _authService.ResetPassword(request);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("send-email")]
+        public async Task<ActionResult> SendEmail(Email request)
+        {
+            _emailService.SendEmail(request);
+            return Ok();
         }
 
         [HttpPost("change-password"), Authorize]
