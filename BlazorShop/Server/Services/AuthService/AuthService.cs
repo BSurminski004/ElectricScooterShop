@@ -74,9 +74,10 @@ namespace BlazorShop.Server.Services.AuthService
 
             await _context.SaveChangesAsync();
 
-            SendEmail(user.Email, $"Witaj w BSE Shop. Potwierdź swoje konto.", VerifyAccountMessage(user.VerificationToken, user.Email));
+            //SendEmail(user.Email, $"Witaj w BSE Shop. Potwierdź swoje konto.", VerifyAccountMessage(user.VerificationToken, user.Email));
+            await Verify(user.VerificationToken);
 
-            return new ServiceResponse<int> { Data = user.Id, Message = "Zostałeś zrejestrowany, zweryfikuj swoje konto!" };
+            return new ServiceResponse<int> { Data = user.Id, Message = "Zostałeś zrejestrowany!" };
         }
 
         public async Task<ServiceResponse<bool>> Verify(string token)

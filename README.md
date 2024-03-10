@@ -6,9 +6,8 @@
 </head>
 <body>
 
-<h1>LinkAggregator - Aplikacja webowa do zarządzania hiperłączami</h1>
+<h1>Electric Scooter Shop</h1>
 
-<img src="Images/mainPage.png" alt="Application Main Page">
 
 <p>The Electric Scooter Application is an e-commerce platform that allows users to browse, purchase, and manage electric scooters online. It aims to provide a seamless and convenient experience for users interested in electric scooters. The application includes features such as product listings, user accounts, shopping cart functionality, and secure payment processing.</p>
 
@@ -33,7 +32,7 @@
 
 <ol>
   <li>Create Server in MS SQL Server, add Connection String to appsettings.Development.json</li>
-  <li>Start application from Visual Studio <b>https://localhost:7282/</b>.</li>
+  <li>Start application from Visual Studio</li>
 </ol>
 
 </body>
