@@ -58,27 +58,6 @@ namespace BlazorShop.DataAccess.DataContext
                     Url = "service"
                 }
                 );
-
-            //modelBuilder.Entity<Product>().HasData(
-            //        new Product
-            //        {
-            //            Id = 1,
-            //            Title = "Techlife X5",
-            //            Description = "Techlife x5 opis",
-            //            ImageUrl = "https://th.bing.com/th/id/OIP.dLICHiaM_oHdaQrd3hu-HAHaFj?rs=1&pid=ImgDetMain",
-            //            Featured = true
-            //        },
-            //        new Product
-            //        {
-            //            Id = 2,
-            //            Title = "Twoja hulajnoga",
-            //            Description = "Opis hulajnogi",
-            //            ImageUrl = "https://upload.wikimedia.org/wikipedia/en/a/a4/Ready_Player_One_cover.jpg",
-            //            CategoryId = 1
-            //        }
-            //        );
-
-            //modelBuilder.Entity<ProductVariant>().HasData();
         }
 
         public DbSet<Product> Products { get; set; }
